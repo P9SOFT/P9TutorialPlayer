@@ -59,7 +59,7 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
 
 @implementation P9TutorialPlayer
 
-- (id)init
+- (instancetype)init
 {
     if( (self = [super init]) != nil ) {
         _playDuration = kDefaultAnimationDuration;
@@ -95,7 +95,7 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
     if( [[UIApplication sharedApplication].delegate respondsToSelector:@selector(window)] == NO ) {
         return nil;
     }
-    id windowObject = [[UIApplication sharedApplication].delegate window];
+    id windowObject = ([UIApplication sharedApplication].delegate).window;
     if( [windowObject isKindOfClass:[UIWindow class]] == NO ) {
         return nil;
     }
@@ -200,12 +200,12 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
 
 - (NSDictionary *)previousMaskNode
 {
-    if( [_animationQueue count] == 0 ) {
+    if( _animationQueue.count == 0 ) {
         return nil;
     }
-    NSInteger count = (NSInteger)[_animationQueue count];
+    NSInteger count = (NSInteger)_animationQueue.count;
     for( NSInteger i=count-1 ; i>=0 ; --i ) {
-        NSDictionary *node = [_animationQueue objectAtIndex:i];
+        NSDictionary *node = _animationQueue[i];
         switch( (P9TutorialPlayerOperationType)[node[kOperation] integerValue] ) {
             case P9TutorialPlayerOperationMaskCircle :
             case P9TutorialPlayerOperationMaskRectangle :
@@ -361,12 +361,12 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
 
 - (BOOL)animationQueuePumping
 {
-    if( [_animationQueue count] == 0 ) {
+    if( _animationQueue.count == 0 ) {
         _currentPlayingNode = nil;
         return [self closeTutorial];
     }
     
-    _nextPlayNode = [_animationQueue objectAtIndex:0];
+    _nextPlayNode = _animationQueue[0];
     [_animationQueue removeObjectAtIndex:0];
     
     switch( (P9TutorialPlayerOperationType)[_nextPlayNode[kOperation] integerValue] ) {
@@ -415,7 +415,7 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
                 [self animationStarted];
                 [UIView animateWithDuration:_playDuration animations:^{
                     for( UIView *anView in _guideBoardView.subviews ) {
-                        [anView setAlpha:0.0f];
+                        anView.alpha = 0.0f;
                     }
                 } completion:^(BOOL finished) {
                     for( UIView *anView in _guideBoardView.subviews ) {
@@ -432,7 +432,7 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
     return YES;
 }
 
-+ (P9TutorialPlayer *)defaultManager
++ (P9TutorialPlayer *)defaultP9TutorialPlayer
 {
     static dispatch_once_t once;
     static P9TutorialPlayer *defaultInstance;
@@ -442,7 +442,7 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
 
 - (BOOL)standbyWithRepositoryPath:(NSString *)repositoryPath
 {
-    if( (self.standby == YES) || ([repositoryPath length] == 0) ) {
+    if( (self.standby == YES) || (repositoryPath.length == 0) ) {
         return NO;
     }
     
@@ -480,10 +480,10 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
     if( self.deactive == YES ) {
         return NO;
     }
-    if( (actionBlock == nil) || ([key length] == 0) ) {
+    if( (actionBlock == nil) || (key.length == 0) ) {
         return NO;
     }
-    [_actionBlockDict setObject:actionBlock forKey:key];
+    _actionBlockDict[key] = actionBlock;
     
     return NO;
 }
@@ -496,7 +496,7 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
     if( self.deactive == YES ) {
         return;
     }
-    if( [key length] == 0 ) {
+    if( key.length == 0 ) {
         return;
     }
     [_actionBlockDict removeObjectForKey:key];
@@ -521,7 +521,7 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
     if( self.deactive == YES ) {
         return YES;
     }
-    if( [keys count] == 0 ) {
+    if( keys.count == 0 ) {
         return NO;
     }
     if( [self prepareTutorialWithViewController:viewController] == NO ) {
@@ -533,7 +533,7 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
     _nextPlayNode = nil;
     
     for( NSString *key in keys ) {
-        P9TutorialPlayerActionBlock actionBlock = [_actionBlockDict objectForKey:key];
+        P9TutorialPlayerActionBlock actionBlock = _actionBlockDict[key];
         if( actionBlock == nil ) {
             continue;
         }
@@ -554,12 +554,12 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
     if( self.deactive == YES ) {
         return 0;
     }
-    if( [key length] == 0 ) {
+    if( key.length == 0 ) {
         return 0;
     }
     NSInteger playedCount = 0;
     @synchronized (self) {
-        playedCount = [[_keyDict objectForKey:key] integerValue];
+        playedCount = [_keyDict[key] integerValue];
     }
     return playedCount;
 }
@@ -572,13 +572,13 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
     if( self.deactive == YES ) {
         return 0;
     }
-    if( [key length] == 0 ) {
+    if( key.length == 0 ) {
         return 0;
     }
     NSInteger playedCount = 0;
     @synchronized (self) {
-        playedCount = [[_keyDict objectForKey:key] integerValue] + 1;
-        [_keyDict setObject:@(playedCount) forKey:key];
+        playedCount = [_keyDict[key] integerValue] + 1;
+        _keyDict[key] = @(playedCount);
         [self syncKeyDict];
     }
     
@@ -593,7 +593,7 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
     if( self.deactive == YES ) {
         return;
     }
-    if( [key length] == 0 ) {
+    if( key.length == 0 ) {
         return;
     }
     @synchronized (self) {
@@ -661,7 +661,7 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
     CGRect startRect;
     CGMutablePathRef pathRef1 = CGPathCreateMutable();
     
-    if( [_animationQueue count] == 0 ) {
+    if( _animationQueue.count == 0 ) {
         startRadius = radius;
         startPosition = position;
         CGPathAddArc(pathRef1, nil, startPosition.x, startPosition.y, startRadius, 0.0f, 2.0f*M_PI, false);
@@ -780,7 +780,7 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerOperationType) {
     CGRect startRect;
     CGMutablePathRef pathRef1 = CGPathCreateMutable();
     
-    if( [_animationQueue count] == 0 ) {
+    if( _animationQueue.count == 0 ) {
         startRect = rect;
         CGPathAddRect(pathRef1, nil, startRect);
         CGPathAddRect(pathRef1, nil, CGRectMake(0, 0, frame.size.width, frame.size.height));

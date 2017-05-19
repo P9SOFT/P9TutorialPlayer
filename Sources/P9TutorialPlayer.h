@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, P9TutorialPlayerActionType) {
  Block code definition to handling to play tutorial.
  Parameter NSDictionary have passed parameters when calling playAction.
  */
-typedef void(^P9TutorialPlayerActionBlock)(NSDictionary *);
+typedef void(^P9TutorialPlayerActionBlock)(NSDictionary * _Nullable);
 
 /*!
  P9TutorialPlayer
@@ -41,14 +41,14 @@ typedef void(^P9TutorialPlayerActionBlock)(NSDictionary *);
  Get shared default singleton module.
  @returns Return singleton P9TutorialPlayer object
  */
-+ (P9TutorialPlayer *)defaultManager;
++ (P9TutorialPlayer * _Nonnull)defaultP9TutorialPlayer;
 
 /*!
  Prepare P9TutorialPlayer.
  @param repositoryPath repository path for P9TutorialPlayer's own data handling.
  @returns Return the result of register succeed or not.
  */
-- (BOOL)standbyWithRepositoryPath:(NSString *)repositoryPath;
+- (BOOL)standbyWithRepositoryPath:(NSString * _Nullable)repositoryPath;
 
 /*!
  Set action block code for key.
@@ -56,13 +56,13 @@ typedef void(^P9TutorialPlayerActionBlock)(NSDictionary *);
  @param key key string to identify tutorials each other.
  @returns Return the result of register succeed or not.
  */
-- (BOOL)setAction:(P9TutorialPlayerActionBlock)actionBlock forKey:(NSString *)key;
+- (BOOL)setAction:(P9TutorialPlayerActionBlock _Nullable)actionBlock forKey:(NSString * _Nullable)key;
 
 /*!
  Remove action block code for key.
  @param key key string to identify tutorials each other.
  */
-- (void)removeActionForKey:(NSString *)key;
+- (void)removeActionForKey:(NSString * _Nullable)key;
 
 /*!
  Remove all action block code.
@@ -76,26 +76,26 @@ typedef void(^P9TutorialPlayerActionBlock)(NSDictionary *);
  @param viewController play animation will activate given viewContrller.
  @returns Return the result of register succeed or not.
  */
-- (BOOL)playAction:(NSArray *)keys parameterDict:(NSDictionary *)parameterDict onViewController:(UIViewController *)viewController;
+- (BOOL)playAction:(NSArray * _Nullable)keys parameterDict:(NSDictionary * _Nullable)parameterDict onViewController:(UIViewController * _Nullable)viewController;
 
 /*!
  Get played count for given key.
  @param key key string to check.
  @returns Return played count.
  */
-- (NSUInteger)playedCountForKey:(NSString *)key;
+- (NSUInteger)playedCountForKey:(NSString * _Nullable)key;
 
 /*!
  Increase played count for given key. if you call playAction method and play successful then this method called automatically.
  @param key key string to increase.
  */
-- (NSInteger)increasePlayedCountForKey:(NSString *)key;
+- (NSInteger)increasePlayedCountForKey:(NSString * _Nullable)key;
 
 /*!
  Reset played count for given key.
  @param key key string to reset.
  */
-- (void)resetPlayedCountForKey:(NSString *)key;
+- (void)resetPlayedCountForKey:(NSString * _Nullable)key;
 
 /*!
  Reset played count for all managed key.
@@ -154,7 +154,7 @@ typedef void(^P9TutorialPlayerActionBlock)(NSDictionary *);
  @param actionType action type when entrance image.
  @param waitUntilUserTouch if you want to hold to next animation until user touch event then give it to YES. If not, give to it NO, then animation will go to next automatically.
  */
-- (void)addScriptForImageEntranceWithImageBoard:(UIImage *)image rect:(CGRect)rect actionType:(P9TutorialPlayerActionType)actionType waitUntilUserTouch:(BOOL)waitUntilUserTouch;
+- (void)addScriptForImageEntranceWithImageBoard:(UIImage * _Nullable)image rect:(CGRect)rect actionType:(P9TutorialPlayerActionType)actionType waitUntilUserTouch:(BOOL)waitUntilUserTouch;
 
 /*!
  add script for image entrance play.
@@ -163,7 +163,7 @@ typedef void(^P9TutorialPlayerActionBlock)(NSDictionary *);
  @param actionType action type when entrance image.
  @param waitUntilUserTouch if you want to hold to next animation until user touch event then give it to YES. If not, give to it NO, then animation will go to next automatically.
  */
-- (void)addScriptForStringEntranceWithStringBoard:(NSAttributedString *)string rect:(CGRect)rect actionType:(P9TutorialPlayerActionType)actionType waitUntilUserTouch:(BOOL)waitUntilUserTouch;
+- (void)addScriptForStringEntranceWithStringBoard:(NSAttributedString * _Nullable)string rect:(CGRect)rect actionType:(P9TutorialPlayerActionType)actionType waitUntilUserTouch:(BOOL)waitUntilUserTouch;
 
 /*!
  add script for clear all exit on board play.
@@ -180,7 +180,7 @@ typedef void(^P9TutorialPlayerActionBlock)(NSDictionary *);
 /*!
  Repository path of P9TutorialPlayer.
  */
-@property (nonatomic, readonly) NSString *repositoryPath;
+@property (nonatomic, readonly) NSString * _Nullable repositoryPath;
 
 /*!
  Deactive value of P9TutorialPlayer. If this value is YES then, all tutorial action will not activate globally.

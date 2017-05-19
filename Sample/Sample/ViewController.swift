@@ -28,18 +28,18 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if P9TutorialPlayer.defaultManager().playedCount(forKey: sampleKey) == 0 {
+        if P9TutorialPlayer.default().playedCount(forKey: sampleKey) == 0 {
             let paramDict = [fullFrameKey:self.view.bounds,
                              kingghidorahFrameKey:self.kingghidorahImageView.frame,
                              godzillaFrameKey:self.godzillaImageView.frame,
                              playButtonFrameKey:self.resetButton.frame]
-            P9TutorialPlayer.defaultManager().playAction([sampleKey], parameterDict: paramDict, on: self)
+            P9TutorialPlayer.default().playAction([sampleKey], parameterDict: paramDict, on: self)
         }
     }
     
     @IBAction func resetButtonTouchUpInside(_ sender: UIButton) {
         
-        P9TutorialPlayer.defaultManager().resetPlayedCount(forKey: sampleKey)
+        P9TutorialPlayer.default().resetPlayedCount(forKey: sampleKey)
     }
 }
 

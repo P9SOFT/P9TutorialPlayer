@@ -16,12 +16,12 @@ let playButtonFrameKey = "playButtonFrameKey"
 func prepareTutorialPlayer() {
     
     let repositoryPath: String = NSSearchPathForDirectoriesInDomains(.documentationDirectory, .userDomainMask, true)[0] + "/tutorial"
-    P9TutorialPlayer.defaultManager().standby(withRepositoryPath: repositoryPath)
+    P9TutorialPlayer.default().standby(withRepositoryPath: repositoryPath)
 }
 
 func registerSamplePlay() {
     
-    P9TutorialPlayer.defaultManager().setAction({ (paramDict:[AnyHashable : Any]?) in
+    P9TutorialPlayer.default().setAction({ (paramDict:[AnyHashable : Any]?) in
         
         if paramDict == nil {
             return
@@ -48,8 +48,8 @@ func registerSamplePlay() {
         welcomeFrame.origin.x = (fullFrame.size.width/2) - (welcomeFrame.size.width/2)
         welcomeFrame.origin.y = (fullFrame.size.height/2) - (welcomeFrame.size.height/2)
         
-        P9TutorialPlayer.defaultManager().addScriptForStringEntrance(withStringBoard: welcomeString, rect: welcomeFrame, actionType: .fadeIn, waitUntilUserTouch: true)
-        P9TutorialPlayer.defaultManager().addScriptForClearBoard(with: .fadeOut, waitUntilUserTouch: false)
+        P9TutorialPlayer.default().addScriptForStringEntrance(withStringBoard: welcomeString, rect: welcomeFrame, actionType: .fadeIn, waitUntilUserTouch: true)
+        P9TutorialPlayer.default().addScriptForClearBoard(with: .fadeOut, waitUntilUserTouch: false)
         
         let kingghidorahFrame = paramDict![kingghidorahFrameKey] as? CGRect ?? .zero
         var arrowFrame: CGRect = .zero
@@ -66,9 +66,9 @@ func registerSamplePlay() {
         kingghidoraString.append(NSAttributedString(string:"This is Kingghidora,", attributes:attributeWhiteRight))
         let arrowImage = UIImage(named: "arrow")
         
-        P9TutorialPlayer.defaultManager().addScriptForStringEntrance(withStringBoard: kingghidoraString, rect: stringFrame, actionType: .fromLeft, waitUntilUserTouch: false)
-        P9TutorialPlayer.defaultManager().addScriptForImageEntrance(withImageBoard: arrowImage, rect: arrowFrame, actionType: .fromTop, waitUntilUserTouch: false)
-        P9TutorialPlayer.defaultManager().addScriptForMaskRectangleEntrance(with: kingghidorahFrame, waitUntilUserTouch: true)
+        P9TutorialPlayer.default().addScriptForStringEntrance(withStringBoard: kingghidoraString, rect: stringFrame, actionType: .fromLeft, waitUntilUserTouch: false)
+        P9TutorialPlayer.default().addScriptForImageEntrance(withImageBoard: arrowImage, rect: arrowFrame, actionType: .fromTop, waitUntilUserTouch: false)
+        P9TutorialPlayer.default().addScriptForMaskRectangleEntrance(with: kingghidorahFrame, waitUntilUserTouch: true)
         
         let godzillaFrame = paramDict![godzillaFrameKey] as? CGRect ?? .zero
         arrowFrame.size.width = 40
@@ -83,12 +83,12 @@ func registerSamplePlay() {
         godzillaString.append(NSAttributedString(string:"and Godzilla", attributes:attributeWhiteCenter))
         let upArrowImage = UIImage(cgImage: arrowImage!.cgImage!, scale: arrowImage!.scale, orientation: .downMirrored)
         
-        P9TutorialPlayer.defaultManager().addScriptForClearBoard(with: .fadeOut, waitUntilUserTouch: false)
-        P9TutorialPlayer.defaultManager().addScriptForMaskRectangleMove(with: godzillaFrame, waitUntilUserTouch: false)
-        P9TutorialPlayer.defaultManager().addScriptForStringEntrance(withStringBoard: godzillaString, rect: stringFrame, actionType: .fromRight, waitUntilUserTouch: false)
-        P9TutorialPlayer.defaultManager().addScriptForImageEntrance(withImageBoard: upArrowImage, rect: arrowFrame, actionType: .fromBottom, waitUntilUserTouch: true)
-        P9TutorialPlayer.defaultManager().addScriptForClearBoard(with: .fadeOut, waitUntilUserTouch: false)
-        P9TutorialPlayer.defaultManager().addScriptForMaskRectangleExit(with: godzillaFrame, waitUntilUserTouch: false)
+        P9TutorialPlayer.default().addScriptForClearBoard(with: .fadeOut, waitUntilUserTouch: false)
+        P9TutorialPlayer.default().addScriptForMaskRectangleMove(with: godzillaFrame, waitUntilUserTouch: false)
+        P9TutorialPlayer.default().addScriptForStringEntrance(withStringBoard: godzillaString, rect: stringFrame, actionType: .fromRight, waitUntilUserTouch: false)
+        P9TutorialPlayer.default().addScriptForImageEntrance(withImageBoard: upArrowImage, rect: arrowFrame, actionType: .fromBottom, waitUntilUserTouch: true)
+        P9TutorialPlayer.default().addScriptForClearBoard(with: .fadeOut, waitUntilUserTouch: false)
+        P9TutorialPlayer.default().addScriptForMaskRectangleExit(with: godzillaFrame, waitUntilUserTouch: false)
         
         let playButtonFrame = paramDict![playButtonFrameKey] as? CGRect ?? .zero
         let handImage = UIImage(named: "hand")
@@ -108,11 +108,11 @@ func registerSamplePlay() {
         let resetString = NSMutableAttributedString()
         resetString.append(NSAttributedString(string:"Tutorial just play once,\nyou can't watch again it before use this reset button.", attributes:attributeWhiteLeft))
         
-        P9TutorialPlayer.defaultManager().addScriptForMaskCircleEntrance(withRadius: radius, position: position, waitUntilUserTouch: false)
-        P9TutorialPlayer.defaultManager().addScriptForImageEntrance(withImageBoard: handImage, rect: handFrame, actionType: .sizeUp, waitUntilUserTouch: false)
-        P9TutorialPlayer.defaultManager().addScriptForStringEntrance(withStringBoard: resetString, rect: stringFrame, actionType: .sizeUp, waitUntilUserTouch: true)
-        P9TutorialPlayer.defaultManager().addScriptForMaskCircleExit(withRadius: radius, position: position, waitUntilUserTouch: false)
-        P9TutorialPlayer.defaultManager().addScriptForClearBoard(with: .fadeOut, waitUntilUserTouch: false)
+        P9TutorialPlayer.default().addScriptForMaskCircleEntrance(withRadius: radius, position: position, waitUntilUserTouch: false)
+        P9TutorialPlayer.default().addScriptForImageEntrance(withImageBoard: handImage, rect: handFrame, actionType: .sizeUp, waitUntilUserTouch: false)
+        P9TutorialPlayer.default().addScriptForStringEntrance(withStringBoard: resetString, rect: stringFrame, actionType: .sizeUp, waitUntilUserTouch: true)
+        P9TutorialPlayer.default().addScriptForMaskCircleExit(withRadius: radius, position: position, waitUntilUserTouch: false)
+        P9TutorialPlayer.default().addScriptForClearBoard(with: .fadeOut, waitUntilUserTouch: false)
         
     }, forKey: sampleKey)
 }
